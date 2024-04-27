@@ -32,8 +32,8 @@ ota:
 
 # This should point to the public location of this yaml file.
 dashboard_import:
-  package_import_url: github://Tozzi89/HanP1/hanp1.yaml@v1
-  import_full_config: false # or true
+  package_import_url: github://Tozzi89/HanP1/hanp1.yaml@v2
+  import_full_config: False # or true
 
 wifi:
   # Set up a wifi access point
@@ -43,6 +43,10 @@ wifi:
 # In combination with the `ap` this allows the user
 # to provision wifi credentials to the device.
 captive_portal:
+
+# Example configuration entry
+web_server:
+  port: 80
 
 # Red LED
 status_led:
@@ -66,3 +70,8 @@ switch:
   - platform: output
     name: "Blue"
     output: 'blue'
+
+    # Example configuration entry
+button:
+  - platform: factory_reset
+    name: Restart with Factory Default Settings
