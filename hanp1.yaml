@@ -16,10 +16,6 @@ esphome:
     name: HanP1.electrical-meter
     version: "1.0"
 
-esphome:
-  name: "${name}"
-  friendly_name: "${friendly_name}"
-  name_add_mac_suffix: true
   includes:
     - p1reader.h
 
