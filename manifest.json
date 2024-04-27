@@ -1,0 +1,17 @@
+{
+  "name": "HanP1",
+  "version": "",
+  "home_assistant_domain": "esphome",
+  "new_install_skip_erase": false,
+  "builds": [
+    {
+      "chipFamily": "ESP8266",
+      "parts": [
+        {
+          "path": "hanp1-esp8266/hanp1-esp8266.bin",
+          "offset": 0
+        }
+      ]
+    }
+  ]
+}
