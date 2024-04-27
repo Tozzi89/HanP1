@@ -1,12 +1,9 @@
-# ESPHome Project Template
+# About
 
-This repo serves as a template for creating a new ESPHome project.
-
-It includes a GitHub workflow that will automatically build the configuration(s) and then deploys a simple 
-website via GitHub pages that utilises [ESP Web Tools](https://esphome.github.io/esp-web-tools/) for users to 
-easily install your project onto their device.
+This is a ESPHome firmware for the HanP1 devices created by [Tozzi89](https://github.com/Tozzi89/HanP1). the code is originaly from https://github.com/psvanstrom/esphome-p1reader, with some minor modifications (RGB LED support).
 
 ## Instructions
+TBD
 
 1. Use this repo template to [generate](https://github.com/esphome/esphome-project-template/generate) your own repository.
    - Make sure to check `Include all branches` so that GitHub Pages is automatically enabled.
@@ -23,4 +20,3 @@ easily install your project onto their device.
    b. scroll down until you find Workflow permissions and mark the option Read and write permissions.
    c. Hit the save button
 8. Push your changes to the repository and GitHub Actions will automatically build and deploy your project.
-
