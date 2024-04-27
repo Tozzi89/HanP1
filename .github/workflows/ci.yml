@@ -12,6 +12,7 @@ jobs:
         file:
           - hanp1.yaml
           - minimal.yaml
+          - p1reader.h
     steps:
       - name: Checkout source code
         uses: actions/checkout@v2
