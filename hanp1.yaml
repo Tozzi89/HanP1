@@ -38,6 +38,7 @@ logger:
 api:
 
 ota:
+  platform: esphome
 
 uart:
   id: uart_bus
