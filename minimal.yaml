@@ -29,10 +29,11 @@ api:
 
 # OTA is required for Over-the-Air updating
 ota:
+  platform: esphome
 
 # This should point to the public location of this yaml file.
 dashboard_import:
-  package_import_url: github://Tozzi89/HanP1/hanp1.yaml@v2
+  package_import_url: github://Tozzi89/HanP1/hanp1.yaml@v3
   import_full_config: False # or true
 
 wifi:
