@@ -17,6 +17,7 @@ esp8266:
 external_components:
   - source: github://Tozzi89/HanP1@v1.2.0
     components: [ p1reader ]
+    refresh: 0s
 
 wifi:
   # Enable fallback hotspot (captive portal) in case wifi connection fails
