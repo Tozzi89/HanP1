@@ -298,6 +298,18 @@ namespace esphome
             }
         }
 
+        bool P1Reader::readByteRepeat(uint8_t *data)
+        {
+            bool hasData = read_byte(data);
+            // Act as an active repeater: echo every byte received from the meter
+            // straight out the TX pin so a second P1 device can share the port.
+            if (hasData && _repeatToTx)
+            {
+                write_byte(*data);
+            }
+            return hasData;
+        }
+
         size_t P1Reader::readBytesUntilAndIncluding(char terminator, char *buffer, size_t length)
         {
             size_t index = 0;
@@ -305,7 +317,7 @@ namespace esphome
             while (index < length)
             {
                 uint8_t c;
-                bool hasData = read_byte(&c);
+                bool hasData = readByteRepeat(&c);
                 if (!hasData)
                 {
                     break;
@@ -349,13 +361,13 @@ namespace esphome
 
                 while (_parseHDLCState == OUTSIDE_FRAME)
                 {
-                    bool hasData = read_byte(&data);
+                    bool hasData = readByteRepeat(&data);
                     if (hasData && data == 0x7e)
                     {
                         uint8_t wait = 10;
                         while (!hasData && wait > 0)
                         {
-                            hasData = read_byte(&data);
+                            hasData = readByteRepeat(&data);
                             if (!hasData)
                             {
                                 delayMicroseconds(_uSecondsPerByte);
@@ -382,24 +394,24 @@ namespace esphome
                             _buffer[_bufferLen++] = data;
                         }
 
+                        ESP_LOGD("hdlc", "Found start of frame...");
                         _parseHDLCState = READING_FRAME;
                         break;
-                        ESP_LOGD("hdlc", "Found start of frame...");
                     }
                 }
 
                 while (_parseHDLCState == READING_FRAME)
                 {
-                    bool hasData = read_byte(&data);
+                    bool hasData = readByteRepeat(&data);
                     if (hasData)
                     {
                         _buffer[_bufferLen++] = data;
 
                         if (data == 0x7e)
                         {
+                            ESP_LOGD("hdlc", "Found end of frame...");
                             _parseHDLCState = FOUND_FRAME;
                             return; // Always parse in a separate timeslot
-                            ESP_LOGD("hdlc", "Found end of frame...");
                         }
 
                         if (_bufferLen >= BUF_SIZE)
@@ -588,11 +600,13 @@ namespace esphome
                             break;
                         }
                     case 0x10:
-                        value = _buffer[_messagePos + 1] | (uint8_t)_buffer[_messagePos + 0] << 8;
+                        // Signed 16-bit. Mask both bytes to avoid signed-char sign
+                        // extension polluting the upper bits, then cast to recover sign.
+                        value = (int16_t)(((uint8_t)_buffer[_messagePos + 0] << 8) | (uint8_t)_buffer[_messagePos + 1]);
                         _messagePos += 2;
                         break;
                     case 0x12:
-                        value = (int16_t)(_buffer[_messagePos + 1] | (uint8_t)_buffer[_messagePos + 0] << 8);
+                        value = (int16_t)(((uint8_t)_buffer[_messagePos + 0] << 8) | (uint8_t)_buffer[_messagePos + 1]);
                         _messagePos += 2;
                         break;
                     default:
